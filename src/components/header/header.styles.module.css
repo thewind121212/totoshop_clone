@@ -1,0 +1,13 @@
+.logo {
+width: 107px;
+height: 57px;
+}
+
+@media (max-width: 982px) {
+    .logo {
+        padding: 10px;
+        width: calc(33vw );
+        height: calc(33vw * 57 / 107);
+    }
+}
+    

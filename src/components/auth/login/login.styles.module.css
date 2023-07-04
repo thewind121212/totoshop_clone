@@ -1,0 +1,103 @@
+.formLogin {
+    width: 100%;
+    height: auto;   
+}
+
+
+.forgetPassword {
+    width: 100%;
+    height: auto;
+    color: #2f80ed;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.submit {
+    margin-top: 10px;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    min-height: 48px;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: #E0E0E0;
+    color: white;
+    font-weight: 450;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase; 
+}
+
+.submitActive {
+    background-color: #00B156;
+}
+
+
+.submitGoogle {
+    margin-top: 10px;
+    border-radius: 3px;
+    width: 100%;
+    text-align: center;
+    min-height: 48px;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: transparent;
+    color: black;
+    border: 1px solid #E0E0E0!important; 
+    font-weight: 450;
+    line-height: 1.75;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.moreWayLogin {
+    width: 100%;
+    height: auto;
+    margin: 30px 0px;
+    display: flex;
+    white-space: nowrap;
+    text-align: center;
+    border: 0px;
+    font-family: "Space Grotesk";
+    color: rgb(117, 117, 117);
+    font-size: 18px;
+}
+
+.moreWayLogin::after, .moreWayLogin::before {
+    position: relative;
+    width: 100%;
+    border-top: thin solid rgba(0, 0, 0, 0.12);
+    top: 50%;
+    content: "";
+    transform: translateY(50%);
+}
+
+.moreWayLoginText {
+    display: inline-block;
+    padding-left: calc(8px * 1.2);
+    padding-right: calc(8px * 1.2);
+}
+
+
+.switchAuth {
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switchAuthText {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.switchAuthTextColor {
+    color: #00B156;
+    cursor: pointer;
+}

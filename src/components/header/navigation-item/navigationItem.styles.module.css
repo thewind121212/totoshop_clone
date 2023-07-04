@@ -1,0 +1,44 @@
+.navigationItem::before {
+    background-color: #00b156;
+    bottom: 0;
+    content: "";
+    cursor: pointer;
+    height: 6px;
+    left: 10px;
+    position: absolute;
+    transition: width .2s ease-in-out;
+    width: 0px;
+}
+
+.navigationItem:hover::before {
+    width: calc(100% - 20px) !important;
+}
+
+.navigationItemActive::before {
+    background-color: #00b156;
+    bottom: 0;
+    content: "";
+    cursor: pointer;
+    height: 6px;
+    left: 10px;
+    position: absolute;
+    transition: width .2s ease-in-out;
+    width: calc(100% - 20px) !important;
+}
+
+
+@keyframes text-highlighter {
+  0% {
+    text-shadow: inherit;
+  }
+  100% {
+    text-shadow: 0 0.1em 50px #00b156, 0.05em -0.03em 15px #00b156,
+      0.05em 0.005em 10px #00b156, 0 0.08em 0 #00b156, 0.05em 0.08em 5px #00b156,
+      0 -0.03em 0 #00b156, -0.03em -0.03em 0 #00b156, -0.03em 0.08em 0 #00b156,
+      -0.03em 0 0 #00b156;
+  }
+}
+
+.hightLight {
+    animation: text-highlighter 2s infinite alternate-reverse;
+}

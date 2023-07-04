@@ -1,0 +1,40 @@
+.carouselCard {
+    position: absolute;
+    bottom: 20px;
+    left: 32px;
+    backdrop-filter: blur(10px);
+    background: hsla(0,0%,100%,.5);
+    border-radius: 6px;
+    box-shadow: 0 4px 4px rgba(99,109,126,.08);
+    color: #000;
+    padding: 15px 22px;
+    transition: all .3s ease;
+}
+
+.carouselCardHeader {
+    margin: 0px;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    font-size: 18px;
+    font-weight: 450;
+}
+
+.carouselCardContent {
+    margin: 0px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    font-size: 14px;
+}
+
+.carouselCard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 4px rgba(99,109,126,.08);
+    background-color: white;
+}
+
+@media (max-width: 982px) {
+    .carouselCard {
+        display: none;
+    }
+}

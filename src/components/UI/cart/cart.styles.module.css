@@ -1,0 +1,24 @@
+.cartBox {
+  width: 65px;
+  height: 45px;
+  margin: 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cartCount {
+  position: absolute;
+  height: 27px;
+  width: 27px;
+  background: #eb5757;
+  font-size: 12px;
+  border-radius: 50%;
+  border: 3px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 35px;
+  top: 1px;
+}

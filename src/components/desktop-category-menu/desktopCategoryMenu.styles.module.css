@@ -1,0 +1,33 @@
+
+.desktopCategoryMenu {
+    opacity: 0;
+    transition: all 400ms;
+    visibility: hidden;
+    top: 77px;
+  position: absolute;
+  left: 0px;
+  display: flex;
+  width: auto;
+  height:auto;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(238,238,238);
+}
+
+.desktopCategoryMenuMain {
+  width: 233px;
+  height: 100%;
+}
+
+.desktopCategoryMenuSub {
+  width: 600px;
+  font-size: 0.875rem;
+  padding: 10px;
+}
+
+
+.isOpen {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+

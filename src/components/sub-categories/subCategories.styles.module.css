@@ -1,0 +1,35 @@
+.subCategoriesWrap {
+  height: auto;
+  width: 100%;
+}
+
+.subCategoriesHeader {
+    font-weight: 450;
+    color: black;
+    font-size: 18px;
+}
+
+
+.subCategoriesContent {
+    width: 100%;
+    height: 430px;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: space-between;
+    box-sizing: border-box;
+}
+
+.subCategoryHeader {
+    color:#00b156;
+    font-size: 1rem;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.subCategoryItems {
+    cursor: pointer;
+}
+
+.subCategoryHeader:hover {
+    text-decoration: underline;
+}

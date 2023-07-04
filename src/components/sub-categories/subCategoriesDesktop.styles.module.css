@@ -1,0 +1,46 @@
+
+.subCategoriesWrap {
+  width: 100%;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+.subCategoriesHeader {
+    font-weight: 450;
+    color: black;
+    font-size: 18px;
+    display: none;
+}
+
+
+.subCategoriesContent {
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: space-around;
+    box-sizing: border-box;
+    margin: 0px;
+    height: 150px;
+}
+
+.subCategoryHeader {
+    color:#00b156;
+    font-size: 1rem;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.subCategoryWrap {
+    width: fit-content;
+    padding: 5px 10px;
+}
+
+.subCategoryItem {
+    cursor: pointer;
+    color: black;
+    text-transform: none;
+}
+
+.subCategoryHeader:hover {
+    text-decoration: underline;
+}

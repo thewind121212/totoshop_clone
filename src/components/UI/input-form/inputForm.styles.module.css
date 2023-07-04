@@ -1,0 +1,88 @@
+.inputForm {
+    display: flex;
+    width: 100%;
+    flex-flow: column wrap;
+    margin-top: 20px;
+}
+
+.legend {
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    padding: 0px;
+    position: relative;
+    font-weight: 450;
+    color: rgb(33, 33, 33);
+    margin-bottom: 8px;
+}
+
+.inputWrap {
+    color: rgba(0, 0, 0, 0.87);
+    cursor: text;
+    display: inline-flex;
+    position: relative;
+    font-size: 1rem;
+    box-sizing: border-box;
+    align-items: center;
+    font-weight: 400;
+    line-height: 1.1876em;
+    letter-spacing: 0.00938em;
+    border: 1px solid rgb(224, 224, 224);
+    padding: 10px;
+}
+
+.input {
+    font: inherit;
+    color: currentColor;
+    width: 100%;
+    border: 0;
+    height: 1.1876em;
+    margin: 0;
+    display: block;
+    padding: 6px 0 7px;
+    min-width: 0;
+    background: none;
+    box-sizing: content-box;
+    animation-name: mui-auto-fill-cancel;
+    letter-spacing: inherit;
+    animation-duration: 10ms;
+    outline: none;
+}
+
+.inputAlert {
+    margin: 0;
+    font-weight: 400;
+    margin-top: 6px;
+    color: red;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+    
+
+.showWrap,.unshowWrap {
+    padding: 0 12px ;
+    overflow: visible;
+    border-radius: 50%;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    background-color: transparent;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.showWrap:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.unshowWrap:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.showIcon, .unshowIcon {
+    opacity: 0.54;
+    width: 24px;
+    height: 24px;
+}

@@ -1,0 +1,149 @@
+.searchBox {
+  width: 276px;
+  border-radius: 4px;
+  background-color: black;
+  height: 48px;
+  display: flex;
+  position: relative;
+  border: 2px solid #616161;
+}
+
+.searchBar {
+  width: calc(100% - 80px);
+  background-color: black;
+  margin: auto 1rem;
+  outline: none;
+  border: none;
+}
+
+.searchBtn {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: relative;
+}
+
+.searchBtn:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.searchIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.searchDropdown {
+    position: absolute;
+    right: 0px;
+    height: 0px ;
+    overflow: hidden;
+    left: 0px;
+    top: 44px;
+    z-index: 999;
+    background: rgb(255, 255, 255);
+    padding: 0px 10px;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+    width: 100%;
+    min-width: 260px;
+    transition: 200ms  ;
+}
+
+.labelDropdown {
+    font-size: 0.875rem;
+}
+
+
+.recentSearch {
+  margin: 10px 0;
+  width: 100%;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recentSearch p {
+  color: rgb(0, 177, 86);
+  font-size: 0.875rem;
+}
+
+.reconmmendDropdown  {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 8px;
+}
+
+.reconmmendItem {
+  min-width: calc(50% - 4px);
+  background-color: #efefef;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  height: 37px;
+  border-radius: 3px;
+  transition: 200ms;
+}
+
+.recommendItems:hover {
+  background-color: #00b156;
+  color: white;
+}
+
+
+.searchBoxFocus {
+  border: 2px solid #00b156 !important;
+  background-color: white !important;
+}
+
+
+.searchBoxFocus .searchBar {
+  background-color: white !important;
+}
+
+.searchBoxFocus .searchDropdown {
+  height: auto !important;
+  padding: 16px 10px !important;
+}
+
+.searchAnimationLayer {
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.54);
+  transform: scale(0);
+  opacity: 0;
+  transition-duration: 300ms;
+}
+
+@keyframes click-animation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+ .onClick  {
+  animation: click-animation 600ms ease-in-out;
+}
+
+@media (max-width: 982px) {
+  .searchBox {
+    display: none;
+  } 
+}
