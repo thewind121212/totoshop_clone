@@ -1,27 +1,57 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import classes from "./navigationItem.styles.module.css";
-import DesktopCategoryMenu from "../../desktop-category-menu/DesktopCategoryMenu.component";
-import { useAppDispatch, useAppSelector } from "@/app/redux/reduxHook";
-import { toogleDesktopCategoryMenu } from "@/app/redux/Features/UI/desktopCategoryMenu.slice";
-import { toogleMobileCategoryMenu } from "@/app/redux/Features/UI/mobileCategoryMenu.slice";
+import { useAppDispatch, useAppSelector } from "@/redux/reduxHook";
+import {
+  toggleCategoryMenu,
+  getPositionRender,
+} from "@/redux/Features/UI/categoryMenu.slice";
 
-function NavigationItem({ link, name, active }: any) {
+function NavigationItem({ link, name, active}: any) {
+  const productRef = useRef<any>(null);
   const activeStyle = active
     ? `${classes.navigationItemActive}`
     : `${classes.navigationItem}`;
 
+  const { typeMenu,positionRender } = useAppSelector((state) => state.categoryMenuStatus);
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.desktopCategoryMenuStatus);
+
+  useEffect(() => {
+    const resize = () => {
+      if(window.innerWidth > 982 ) {
+      const dimension = productRef.current?.getBoundingClientRect();
+      dispatch(getPositionRender(dimension === undefined ? positionRender : dimension.x));
+      }
+
+      if(window.innerWidth > 982 && typeMenu === 'mobile') {
+        dispatch(toggleCategoryMenu(null));
+      }
+
+      if(window.innerWidth < 982 && typeMenu === 'desktop') {
+        dispatch(toggleCategoryMenu(null));
+      }
+
+    };
+    if (name === "SẢN PHẨM" ) {
+      window.addEventListener("resize", resize);
+      const dimension = productRef.current?.getBoundingClientRect();
+      if (dimension !== undefined) { 
+      dispatch(getPositionRender(dimension.x));
+      }
+    }
+
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handeToggleDropdown = () => {
-    if (!isOpen) {
-      if (window.innerWidth < 982) {
-        dispatch(toogleMobileCategoryMenu(true));
-      } else {
-        dispatch(toogleDesktopCategoryMenu(!isOpen));
-      }
+    if (window.innerWidth < 982) {
+      dispatch(toggleCategoryMenu("mobile"));
+    } else {
+      dispatch(toggleCategoryMenu("desktop"));
     }
   };
 
@@ -29,12 +59,12 @@ function NavigationItem({ link, name, active }: any) {
     return (
       <li
         onClick={handeToggleDropdown}
+        ref={productRef}
         className={` flex relative w-fit uppercase px-2.5 flex-wrap content-around cursor-pointer  h-full  ${activeStyle} ${
           name === "New arrivals" && classes.hightLight
         } `}
       >
         <div>{name}</div>
-        <DesktopCategoryMenu />
       </li>
     );
   }

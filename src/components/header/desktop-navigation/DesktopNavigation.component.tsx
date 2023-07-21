@@ -19,7 +19,7 @@ function DesktopNavigation() {
         {dummyNavLink.map((link:any) => {
             const active = pathname.includes(link.link) ? true : false
             return (
-                 <NavigationItem key={link.name} name={link.name} link={link.link} active={active}/>
+                 <NavigationItem key={link.name} name={link.name} link={link.link} active={active} type="desktop" />
             ) 
         })}
     </ul>

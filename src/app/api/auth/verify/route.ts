@@ -1,5 +1,4 @@
 import  jwt from 'jsonwebtoken'
-import mongoose from 'mongoose';
 import { connectToDatabase } from '@/utils/db/db.utils';
 import { PreUserVerifyModal, User} from "@/utils/db/modal/index.modal";
 
@@ -32,9 +31,7 @@ export async function POST(req: Request) {
     }
     const timeDifference  = now - preUser.updatedAt
     const daysPassed = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const hoursPassed = Math.floor(timeDifference / (1000 * 60 * 60));
-    const secondsPassed = Math.floor((timeDifference / 1000) % 60); 
-    if (secondsPassed > 1) {
+    if (daysPassed > 1) {
         return new Response(JSON.stringify({ error: "Unauthorized", message: "Email quá thời hạn xác thực" }), {
             status: 401,
             headers: {
@@ -58,6 +55,7 @@ export async function POST(req: Request) {
             phone: retriveData.phone,
             attempVerified: retriveData.attemp,
             verified: true,
+            resetPasswordStatus: false,
              })
         return new Response(JSON.stringify({ message: "Bạn đã xác thực thành công" }), {
             status: 200,

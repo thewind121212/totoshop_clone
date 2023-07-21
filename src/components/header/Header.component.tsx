@@ -1,6 +1,6 @@
 "use client";
 //library
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 //css
 import classes from './header.styles.module.css'
@@ -12,16 +12,14 @@ import Cart from "../UI/cart/Cart.component";
 import User from "../UI/user/User.component";
 import MobileNavigation from "./mobile-navigation/MobileNavigation.component";
 import AnnouncementBar from "../announcement-bar/AnnouncementBar.component";
-import MobileCategoryMenu from "../mobile-category-menu/MobileCategoryMenu.component";
 
 //redux
-import { useAppDispatch } from "@/app/redux/reduxHook";
-import { toogleMobileCategoryMenu } from "../../app/redux/Features/UI/mobileCategoryMenu.slice";
-import { toogleDesktopCategoryMenu } from "@/app/redux/Features/UI/desktopCategoryMenu.slice";
-import { getYPostion } from "@/app/redux/Features/UI/headerPosition.slice";
+import { useAppDispatch } from "@/redux/reduxHook";
+import {  toggleCategoryMenu} from "../../redux/Features/UI/categoryMenu.slice";
 
 function Header() {
   //react core
+  const [y, setY] = useState<any>('auto');
   const headerRef = useRef<any>(null);
 
   //useSelector Redux
@@ -29,9 +27,15 @@ function Header() {
 
   //useEffect
   useEffect(() => {
-      dispatch(getYPostion(headerRef.current.offsetHeight))
     if (window.innerWidth < 982) {
+      if(headerRef.current.offsetHeight){
+        setY(headerRef.current.offsetHeight);
+      }
     }
+
+    if (window.innerWidth > 982) {
+      setY(106); 
+    } 
 
     const debounce = (fn: any, ms: number) => {
       let timer: any;
@@ -44,34 +48,53 @@ function Header() {
     };
 
     const handleResize = debounce(() => {
-      if (window.innerWidth < 982) {
-        dispatch(toogleDesktopCategoryMenu(false));
-        dispatch(getYPostion(headerRef.current.offsetHeight))
-      } else {
-        dispatch(getYPostion(106))
+      if(window.innerWidth < 982) {
+        setY(headerRef.current.offsetHeight);
+      }else {
+        setY(106);
       }
-    }, 0);
+       }, 0);
+
+    const handlerScrollEvent = () => {
+      if (window.scrollY > 0) {
+        setY(headerRef.current.offsetHeight);
+        headerRef.current.style.position = "fixed";
+        headerRef.current.style.top = "0";
+        headerRef.current.style.width = "100%";
+        headerRef.current.style.zIndex = "80";
+      } else {
+        headerRef.current.style.position = "relative";
+        headerRef.current.style
+      }
+    }
+
+    window.addEventListener("scroll", handlerScrollEvent)
 
     window.addEventListener("resize", handleResize);
     document.addEventListener("keydown", (evt) => {
       if (evt.key === "Escape") {
-        dispatch(toogleMobileCategoryMenu(false));
+        dispatch(toggleCategoryMenu(null));
       }
     });
+
+
+    //this is return to clear useEffect
     return () => {
+      window.removeEventListener("scroll", handlerScrollEvent)
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("keydown", (evt) => {
         if (evt.key === "Escape") {
-          dispatch(toogleMobileCategoryMenu(false));
+          dispatch(toggleCategoryMenu(null));
         }
       });
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="fixed w-full top-0 h-auto z-50" ref={headerRef}>
+    <div className="w-full" style={{height: `  ${y === 'auto' ? 'auto' : y+'px'}  `}}>
+
+    <div className=" w-full top-0 h-auto z-50" ref={headerRef}>
       <AnnouncementBar />
-      <MobileCategoryMenu />
       <div
         className="bg-black md:h-[77px] min-h-[77px]"
         style={{
@@ -84,7 +107,7 @@ function Header() {
           <div className="mobile-icon  w-[150px] visible md:hidden ">
             <Image
               src="/icons/iconMobileMenu.png"
-              onClick={() => dispatch(toogleMobileCategoryMenu(true))}
+              onClick={() => dispatch(toggleCategoryMenu('mobile'))}
               width={32}
               height={20}
               alt="menu"
@@ -105,7 +128,7 @@ function Header() {
           />
           </div>
           {/* navigation */}
-          <DesktopNavigation />
+          {window.innerWidth > 982 && <DesktopNavigation/>}
           {/* tool box */}
           <div className="flex justify-center items-center">
             <Search isMobile={false} />
@@ -113,8 +136,9 @@ function Header() {
             <User />
           </div>
         </div>
-        <MobileNavigation />
+        {window.innerWidth < 982 && <MobileNavigation/>}
       </div>
+    </div>
     </div>
   );
 }

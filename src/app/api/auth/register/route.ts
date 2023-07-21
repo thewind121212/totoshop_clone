@@ -1,5 +1,5 @@
 import { connectToDatabase } from "@/utils/db/db.utils";
-import { PreUserVerifyModal } from "@/utils/db/modal/index.modal";
+import { PreUserVerifyModal, User } from "@/utils/db/modal/index.modal";
 import { sendMailHandler } from "@/utils/node-mailer";
 import { verifyUserTemplate } from "@/utils/node-mailer/mail-template/verifyUser.template";
 import { hashPassword } from "@/utils/bcrypt/index.bcrypt";
@@ -17,6 +17,21 @@ export async function POST(req: Request) {
   const body = await req.json();
   const now: any = new Date();
   const email = body.email;
+  const userVefifiedEmail = await User.findOne({ email: email });
+  if (userVefifiedEmail !== null) {
+    return new Response(
+      JSON.stringify({
+        error: "Unauthorized",
+        message: "Email này đã được sử dụng",
+      }),
+      {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
   let isSentCheck = null;
   if (process.env.JWT_SECRET === undefined)
     throw new Error("JWT_SECRET is not defined");
@@ -56,7 +71,7 @@ export async function POST(req: Request) {
             message: "Vui lòng đợi 60 giây trước khi gửi lại email xác thực",
           }),
           {
-            status: 402,
+            status: 401,
             headers: {
               "Content-Type": "application/json",
             },

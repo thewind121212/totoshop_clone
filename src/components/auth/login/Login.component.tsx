@@ -1,81 +1,130 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
-import InputForm from "../../UI/input-form/InputForm.component";
+import Input from "../../UI/input/Input.component";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import classes from "./login.styles.module.css";
-import { useAppDispatch } from "@/app/redux/reduxHook";
+import { useAppDispatch } from "@/redux/reduxHook";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { toogleSnackBarDispatch, toogleSnackBar } from "@/redux/Features/UI/snackBar.slice";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const loginTable = [
+
+//redux dispatch type
+const dispatchType = {
+  'LOGIN_SUCCESS': [{type: 'success', content: 'Đăng nhập thành công'}],
+  'LOGIN_FAIL': [{type: 'error', content: 'Email hoặc mật khẩu không đúng'}],
+} 
+
+//login table
+const loginTable: any = [
   {
-    id: "user",
-    label: "Số điện thoại",
-    placeholder: "Số điện thoại",
+    id: "email",
+    label: "Email",
+    placeholder: "Email",
     type: "text",
-    required: true,
   },
   {
     id: "password",
     label: "Mật khẩu",
     placeholder: "Mật khẩu",
     type: "password",
-    required: true,
   },
 ];
 
-const initialFormState = {
-    user: false,
-    password: false,
-}
+//login schema
+const LoginSchema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required().min(7),
+});
 
-
+//component
 function Login({ changeAuthType }: any) {
-  const [valid, setValid] = useState<any>(initialFormState);
   const dispatch = useAppDispatch();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  console.log(session, status);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields, isValid },
+  } = useForm({
+    resolver: yupResolver(LoginSchema),
+  });
+
   //checking when rerender
 
-    const isValidation = valid.user.length > 0 && valid.password.length > 0; 
-
-  //func
-  const checkValid = (field: string, value: string) => {
-    setValid({
-      ...valid,
-      [field]: value,
+  const onSubmit = async (data: any) => {
+    console.log(JSON.stringify(data));
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
     });
+    if (res?.error !== null) {
+      dispatch(toogleSnackBar(toogleSnackBarDispatch(dispatchType.LOGIN_FAIL)))
+      return 
+    }
+    dispatch(toogleSnackBar(toogleSnackBarDispatch(dispatchType.LOGIN_SUCCESS)))
+    router.push('/')
   };
 
-
+  const handlerGoogleLogin = async () => {
+    const res = await signIn("google", {
+      redirect: false,
+      "callbackUrl": "http://localhost:3000/",})
+    console.log(res);
+  }
 
   return (
     <div className="w-full h-auto pt-[10px] px-[30px] pb-[30px]">
-      <form className={classes.formLogin} action="">
-        {loginTable.map((item) => {
+      <form
+        className={classes.formLogin}
+        action=""
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {loginTable.map(({ id, label, placeholder, type }: any) => {
           return (
-            <InputForm
-              key={item.id}
-              id={item.id}
-              label={item.label}
-              placeholder={item.placeholder}
-              checkValid={checkValid}
-              type={item.type}
-              required={item.required}
+            <Input
+              register={register}
+              key={id}
+              id={id}
+              label={label}
+              placeholder={placeholder}
+              type={type}
+              errors={errors}
+              formType="login"
             />
           );
         })}
-        <div className={classes.forgetPassword}>Quên mật khẩu?</div>
+        <div className={classes.forgetPassword}>
+          <Link href="/reset-password">Quên mật khẩu? </Link>
+        </div>
         <button
-          className={`${classes.submit} ${
-            isValidation && classes.submitActive
-          }`}
+          className={`${classes.submit} ${true && classes.submitActive}`}
           type="submit"
-          disabled={!isValidation}
         >
           đăng nhập
         </button>
       </form>
       <div className={classes.moreWayLogin}>
-        <span className={classes.moreWayLoginText}>Hoặc</span>
+        <span
+          className={classes.moreWayLoginText}
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Hoặc
+        </span>
       </div>
-      <button className={classes.submitGoogle} type="submit">
+      <button
+        className={classes.submitGoogle}
+        onClick={handlerGoogleLogin}
+        type="submit"
+      >
         <Image alt="google" src="/icons/google.webp" width={20} height={21} />
         <div className="">GOOGLE</div>
       </button>

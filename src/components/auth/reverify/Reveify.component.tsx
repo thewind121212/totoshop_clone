@@ -1,11 +1,10 @@
-import { useAppSelector, useAppDispatch } from "@/app/redux/reduxHook";
-import { toogleSnackBar } from "@/app/redux/Features/UI/snackBar.slice";
+import { useAppSelector, useAppDispatch } from "@/redux/reduxHook";
+import { toogleSnackBar, toogleSnackBarDispatch} from "@/redux/Features/UI/snackBar.slice";
 import CountDownButton from "@/components/UI/count-down-button/CountDownButton.component";
 
-import React from 'react'
-
+const dispatchType = {
+  "RESENT_EMAIL": [{type: 'success', content: 'Đã gửi lại email xác thực'}], }
 function Reverify() {
-
   const state = useAppSelector((state) => state.registerStatus);
   const dispatch = useAppDispatch();
 
@@ -24,12 +23,7 @@ function Reverify() {
 
     if(isSentCheck) {
       dispatch(
-        toogleSnackBar({
-          show: true,
-          notificationStack: [
-            { type: "success", content: "Đã gửi lại email xác thực" },
-          ],
-        })
+        toogleSnackBar(toogleSnackBarDispatch(dispatchType.RESENT_EMAIL))
       );
     }
 

@@ -1,7 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import Reverify from "@/components/auth/reverify/Reveify.component";
-import { useAppSelector } from "@/app/redux/reduxHook";
+import { useAppSelector } from "@/redux/reduxHook";
 import VerifyEmailPage from "@/components/auth/verifying-email/VerifyingEmail.component";
 
 function VerifyPage() {

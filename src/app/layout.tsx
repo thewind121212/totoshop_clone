@@ -1,13 +1,12 @@
 import './globals.css'
-import {Space_Grotesk  } from 'next/font/google'
+import { space_grotesk } from './font/font'
 //components
-import AnnouncementBar from '@/components/announcement-bar/AnnouncementBar.component'
 import Header from '@/components/header/Header.component'
 import SnackBar from '@/components/snack-bar/SnackBar.component'
-//redux
-import Providers from './redux/Provider'
+import Overlay from '@/components/overlay/Overlay.component'
+//provider
+import AppProvider from '@/components/app-provider/AppProvider.component' 
 
-const inter = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -25,15 +24,18 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={space_grotesk.className} style={{backgroundColor: '#f9fafa'}}>
         {/* Header */}
-        <Providers>
+        <AppProvider>
         <Header/>
         <div className="" style={{margin:'0px auto', maxWidth: '1440px'}}>
           <SnackBar/>
         {children}
         </div>
-        </Providers>
+      <div className="fixed w-full h-[10px] top-0 left-0" style={{zIndex: '90'}}>
+        <Overlay/> 
+      </div>
+        </AppProvider>
         </body>
     </html>
   )

@@ -1,17 +1,28 @@
 "use client";
-import { FormEvent, useEffect, useState } from "react";
+import {useEffect} from "react";
+import Input from "../../UI/input/Input.component";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InputForm from "../../UI/input-form/InputForm.component";
 import classes from "./register.styles.module.css";
-import { useAppDispatch, useAppSelector } from "@/app/redux/reduxHook";
+import { useAppDispatch } from "@/redux/reduxHook";
 import {
   setSentEmailRegisterStatus,
   setUserEmail,
-} from "@/app/redux/Features/Auth/auth.slice";
-import { toogleSnackBar } from "@/app/redux/Features/UI/snackBar.slice";
+} from "@/redux/Features/Auth/auth.slice";
+import { toogleSnackBar, toogleSnackBarDispatch } from "@/redux/Features/UI/snackBar.slice";
+import Link from "next/link";
 
-const registerTable = [
+
+
+const dispatchType = {
+  "PASSWORD_NOT_MATCH": [{type: 'error', content: 'Mật khẩu nhập lại không trùng khớp'}],
+  'REGISTER_SUCCESS': [{type: 'success', content: 'Đăng ký thành công'}],
+}
+
+const registerTable  = [
   {
     id: "name",
     label: "Họ tên",
@@ -49,93 +60,53 @@ const registerTable = [
   },
 ];
 
-const initialFormState = {
-  name: "",
-  phone: "",
-  email: "",
-  password: "",
-  repassword: "",
-};
+
+const RegisterSchema = yup.object().shape({
+  name: yup.string().required('Vui lòng nhập họ tên'),
+  phone: yup.string().required().min(10, 'Số điện thoại không hợp lệ'),
+  email: yup.string().email('Email không hợp lệ').required(),
+  password: yup.string().required().min(7, 'Mật khẩu phải có ít nhất 7 ký tự'),
+  repassword: yup.string().required().min(7, 'Mật khẩu phải ít nhất 7 ký tự'),
+});
+
 
 function Register({ changeAuthType }: any) {
-  //react core
-  const [valid, setValid] = useState<any>(initialFormState);
-  //next
   const router = useRouter();
   //redux
   const dispatch = useAppDispatch();
-  const { isSentEmailRegister } = useAppSelector(
-    (state) => state.registerStatus
-  );
 
     useEffect(() => {
       dispatch(setSentEmailRegisterStatus(false));
     },[])
 
   //checking when rerender
+  
 
-  const isValidation = Object.values(valid)
-    .map((item: any) => item.length > 0)
-    .reduce((a: any, b: any) => a + b, 0);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields, isValid },
+  } = useForm({
+    resolver: yupResolver(RegisterSchema),
+  });
+
 
   //func
-  const checkValid = (field: string, value: string) => {
-    setValid({
-      ...valid,
-      [field]: value,
-    });
-  };
-
-  const handerRegister = async (event: FormEvent) => {
-    event.preventDefault();
-    const errorStack = [];
-    const patternUserName = /^[a-zA-Z0-9_\-]{3,16}$/;
-    const patternEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    //check valid phone
-    if (valid.phone.length < 10) {
-      errorStack.push({ type: "error", content: "Số điện thoại không hợp lệ" });
-    }
-    //check valid email
-
-    if (!patternEmail.test(valid.email)) {
-      errorStack.push({ type: "error", content: "Email không hợp lệ" });
-    }
-
-    //check valid userName
-    if (!patternUserName.test(valid.name)) {
-      errorStack.push({ type: "error", content: "Tên đăng nhập không hợp lệ" });
-    }
+  const handerRegister = async (data: any) => {
 
     //check password match
-    if (valid.password !== valid.repassword) {
-      errorStack.push({
+    if (data.password !== data.repassword) {
+      const error = [{
         type: "error",
         content: "Mật khẩu nhập lại không trùng khớp",
-      });
-    }
-
-    //check password length
-    if (valid.password.length < 7) {
-      errorStack.push({
-        type: "error",
-        content: "Mật khẩu phải có hơn 7 ký tự",
-      });
+      }]
+      dispatch(toogleSnackBar(toogleSnackBarDispatch(dispatchType.PASSWORD_NOT_MATCH)));
+      return 
     }
 
 
-    if (errorStack.length > 0) {
-      dispatch(
-        toogleSnackBar({
-          show: true,
-          notificationStack: errorStack,
-        })
-      );
-      return;
-    }
-
-    const form = new FormData(event.target as HTMLFormElement);
     dispatch(setSentEmailRegisterStatus(true));
-    dispatch(setUserEmail(form.get("email") as string));
+    dispatch(setUserEmail(data.email));
 
     const res = await fetch("/api/auth/register", {
       headers: {
@@ -143,30 +114,23 @@ function Register({ changeAuthType }: any) {
       },
       method: "POST",
       body: JSON.stringify({
-        name: form.get("name"),
-        phone: form.get("phone"),
-        email: form.get("email"),
-        password: form.get("password"),
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        password: data.password,
       }),
     });
 
-    const { isSentCheck } = await res.json();
+    const resMessage = await res.json();
 
-    if (isSentCheck) {
-      dispatch(
-        toogleSnackBar({
-          show: true,
-          notificationStack: [
-            { type: "success", content: "Đăng ký thành công vui lòng kiếm tra mail để kích hoạt tài khoản" },
-          ],
-        })
-      );
+    if (res.status === 200) {
+      dispatch(toogleSnackBar(toogleSnackBarDispatch(dispatchType.REGISTER_SUCCESS)));
       router.push("/auth/verify");
-    } else {
+    } else if (res.status === 401) {
       dispatch(
         toogleSnackBar({
           show: true,
-          notificationStack: [{ type: "error", content: "Đăng ký thất bại vui lòng thử lại" }],
+          notificationStack: [{ type: "error", content: resMessage.message }],
         })
       );
       dispatch(setSentEmailRegisterStatus(false));
@@ -175,31 +139,30 @@ function Register({ changeAuthType }: any) {
 
   return (
     <div className="w-full h-auto pt-[10px] px-[30px] pb-[30px]">
-      <form className={classes.formLogin} action="" onSubmit={handerRegister}>
-        {registerTable.map((item) => {
+      <form className={classes.formLogin} action="" onSubmit={handleSubmit(handerRegister)}>
+        {registerTable.map(({id, label, placeholder, type } : {id: any, label: string, placeholder: string, type: string}) => {
           return (
-            <InputForm
-              key={item.id}
-              id={item.id}
-              label={item.label}
-              placeholder={item.placeholder}
-              checkValid={checkValid}
-              type={item.type}
-              required={item.required}
+            <Input
+              register={register}
+              key={id}
+              id={id}
+              label={label}
+              placeholder={placeholder}
+              type={type}
+              errors={errors}
+              formType="register"
             />
           );
         })}
-        <div className={classes.forgetPassword}>Quên mật khẩu?</div>
+        <div className={classes.forgetPassword}>
+          <Link href="/reset-password">Quên mật khẩu? </Link>
+          </div>
         <button
           className={`${classes.submit} ${
-            isValidation === registerTable.length &&
-            !isSentEmailRegister &&
+            isValid &&
             classes.submitActive
           }`}
           type="submit"
-          disabled={
-            !(isValidation === registerTable.length) && !isSentEmailRegister
-          }
         >
           đăng ký
         </button>

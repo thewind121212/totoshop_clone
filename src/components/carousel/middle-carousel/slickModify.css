@@ -1,0 +1,33 @@
+.slick-slider {
+    max-height: 660px;
+}
+
+
+.slick-prev, .slick-next {
+    background-color: white !important;
+}
+
+.slick-track::after {
+    display: none;
+}
+
+.slick-track::before {
+    display: none;
+}
+
+
+.slick-arrow::after{
+    display: none;
+}
+
+.slick-arrow::before{
+    display: none;
+}
+
+.slick-center {
+    transition: all 0.3s ease !important;
+    transform: scale(1.1) !important;
+    border-radius: 20px;
+    overflow: hidden;
+    opacity: 1;
+}

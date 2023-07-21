@@ -3,7 +3,7 @@
   height: 100vh;
   position: fixed;
   background-color: white;
-  transition: all 150ms ;
+  transition: top 250ms ease-in-out ;
   z-index: 10;
 }
 

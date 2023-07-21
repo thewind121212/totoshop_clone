@@ -1,0 +1,39 @@
+.bannerChild {
+    width: 100%;
+    transition: transform 0.3s ease;
+    transform: scale(0.9);
+    opacity: 0.8;
+}
+
+.wrap {
+    width: 60vw !important;
+    height: auto;
+}
+
+.imageWrap {
+    width: 60vw;
+    max-height: 600px;
+    border-radius: 6px;
+    object-fit: contain;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    overflow: hidden;
+}
+
+.active {
+    border-radius: 6px;
+    transform: scale(1);
+    margin: 0;
+    opacity: 1;
+}
+
+.previous {
+    transform: translateX(10vw) scale(0.8) !important;
+}
+
+.next {
+    transform: translateX(-10vw) scale(0.8) !important;
+}
+
+

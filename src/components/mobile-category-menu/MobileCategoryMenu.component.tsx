@@ -2,8 +2,8 @@
 import { useState } from "react";
 import classes from "./mobileCategoryMenu.styles.module.css";
 import Search from "../UI/search/Search.component";
-import { useAppDispatch, useAppSelector } from "@/app/redux/reduxHook";
-import { toogleMobileCategoryMenu } from "../../app/redux/Features/UI/mobileCategoryMenu.slice";
+import { useAppDispatch, useAppSelector } from "@/redux/reduxHook";
+import { toggleCategoryMenu } from "../../redux/Features/UI/categoryMenu.slice";
 //component
 import MainCategories from "../main-categories/MainCategories.component";
 import SubCategories from "../sub-categories/SubCategories.component";
@@ -93,14 +93,11 @@ const dummyCategory: any = {
   },
 };
 
-function MobileCategoryMenu() {
+function MobileCategoryMenu({type} : any) {
   //react core
   const [categorySelected, setCategorySelected] = useState<string>("aoKhoac");
   //redux
   const dispatch = useAppDispatch();
-  const isOpen = useAppSelector(
-    (state) => state.mobileCategoryMenuStatus.isOpen
-  );
   //function
   const handleSelectCategory = (category: string) => {
     if (categorySelected === category) return;
@@ -110,13 +107,13 @@ function MobileCategoryMenu() {
   return (
     <div
       className={`${classes.mobileCateogyMenu} ${
-        isOpen ? classes.onOpen : classes.onClose
+        type === 'mobile' ? classes.onOpen : classes.onClose
       }`}
     >
       <div className={classes.close}>
         <button
           className={classes.closeButton}
-          onClick={() => dispatch(toogleMobileCategoryMenu(false))}
+          onClick={() => dispatch(toggleCategoryMenu(null))}
         >
           <svg
             className={classes.closeIcon}

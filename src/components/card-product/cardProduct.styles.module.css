@@ -1,0 +1,178 @@
+
+
+.cardProductUpper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.cardProductPreview {
+    position: absolute;
+    width: 100%;
+    height: 35px;
+    bottom: -35px;
+    transition: all 0.3s ease 0s;
+    background-color: white;
+    padding: 5px 10px;
+}
+
+.cardProductPreviewWrap {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+}
+
+.cardProductPreviewItem {
+    align-items: center;
+    background-color: inherit;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    height: 25px!important;
+    justify-content: center;
+    width: 25px!important;
+}
+
+.active {
+    border: 1px solid rgb(96, 132, 202) !important;
+}
+
+.cardProductLike {
+    align-items: center;
+    justify-content: center;
+    background: hsla(0,0%,100%,.6)!important;
+    border: 0!important;
+    border-radius: 2px!important;
+    box-shadow: 0 4px 6px rgba(0,0,0,.07)!important;
+    color: #000!important;
+    display: flex;
+    gap: 5px;
+    padding: 3px!important;
+    position: absolute!important;
+    right: 9px;
+    bottom: 9px;
+    z-index: 100;
+}
+
+.cardProductLikeText {
+    color: #003644!important;
+    font-size: 13px!important;
+    font-weight: 600!important;
+    line-height: 14px!important;
+}
+
+.cardProductRoot {
+    padding-top: 16px;
+    padding-left: 8px;
+    flex-basis: 25%;
+    max-width: 25%;
+}
+
+
+.cardProductContainer {
+    padding: 15px 10px;
+    width: 100%;
+    display: flex ;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardProductWrap {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 2px 2px 11px hsla(0,3%,7%,.1)!important;
+}
+
+.cardProductDown {
+    width: 100%;
+    height: 65px;
+    background: white;
+    padding: 5px 10px;
+}
+
+.cardProductImageContain {
+    width: 100%;
+    overflow: hidden; ;
+    transition: all 0.3s ease 0s;
+}
+
+.cardProductImageContain:hover {
+    transform: scale(1.1);
+}
+
+.cardProductContainer:hover .cardProductPreview {
+    bottom: 0;
+}
+
+
+
+.cardProductDownWrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.cardProductDownText  {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 450;
+    line-height: 1.5;
+    color: #000;
+    font-style: normal;
+    overflow: hidden;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.cardProductDownText:hover {
+    color: #00b156;
+    font-weight: bolder;
+}
+
+
+.cardProductDownPriceCart {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardProductPrice {
+    font-size: 14px;
+}
+
+
+.cardProductAddCart {
+    align-items: center;
+    background: transparent;
+    border: 1px solid #003644;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #003644;
+    cursor: pointer;
+    display: flex;
+    gap: 2px;
+    height: 26px;
+    cursor: pointer;
+    justify-content: center;
+    padding: 1px 6px;
+}
+
+
+
+.cardProductAddCartText {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #003644;
+    font-style: normal;
+}

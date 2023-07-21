@@ -27,6 +27,10 @@ const UserSchema = new mongoose.Schema({
     verified: {
         type: Boolean, 
         required: true,
+    },
+    resetPasswordStatus: {
+        type: Boolean, 
+        required: true,
     }
 }, { timestamps: true });
 

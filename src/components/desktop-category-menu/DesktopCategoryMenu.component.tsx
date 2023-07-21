@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/app/redux/reduxHook";
-import { toogleDesktopCategoryMenu } from "@/app/redux/Features/UI/desktopCategoryMenu.slice";
+import { useAppSelector, useAppDispatch } from "@/redux/reduxHook";
+import { toggleCategoryMenu } from "@/redux/Features/UI/categoryMenu.slice";
 import classes from "./desktopCategoryMenu.styles.module.css";
 //component
 import MainCategories from "../main-categories/MainCategories.component";
@@ -94,28 +94,20 @@ const dummyCategory: any = {
   },
 };
 
-function DesktopCategoryMenu() {
+function DesktopCategoryMenu({type} : any) {
   const locationRef = useRef<any>(null);
-  const dispatch = useAppDispatch();
-  //redux
-  const { isOpen } = useAppSelector((state) => state.desktopCategoryMenuStatus);
-  let { y } = useAppSelector((state) => state.headerPositionStatus);
+  const timeoutRef = useRef<any>(null);
   const [categorySelected, setCategorySelected] = useState<string>("aoKhoac");
+  //redux
+  const dispatch = useAppDispatch();
+  const {positionRender } = useAppSelector((state) => state.categoryMenuStatus);
+
 
   useEffect(() => {
-    const pos = locationRef.current.getBoundingClientRect();
-    if (pos.x + pos.width !== 0) {
-      const full = pos.x + pos.width;
-      const windowWidth = window.innerWidth;
-      const chenh = windowWidth - full;
-      if (chenh < 0) {
-        locationRef.current.style.left = `${chenh}px`;
-      }
-      if (chenh > 0) {
-        locationRef.current.style.left = `0px`;
-      }
-    }
-  });
+    const left = positionRender === null ? 0 : positionRender 
+    locationRef.current.style.top = `${106}px`;
+        locationRef.current.style.left = `${left}px`;
+  },[positionRender]);
 
 
   //function
@@ -124,11 +116,20 @@ function DesktopCategoryMenu() {
     setCategorySelected(category);
   };
 
+
+  const handlerMouseLeave = () : any => {
+    timeoutRef.current = setTimeout(() => {
+    dispatch(toggleCategoryMenu(null));
+    },600)
+  }
+
+  // console.log(type)
   return (
     <div
       ref={locationRef}
-      onMouseLeave={() => dispatch(toogleDesktopCategoryMenu(false))}
-      className={` ${classes.desktopCategoryMenu} ${isOpen && classes.isOpen}`}
+      onMouseLeave={() => handlerMouseLeave()}
+      onMouseOver={() => clearTimeout(timeoutRef.current)}
+      className={` ${classes.desktopCategoryMenu} ${type === 'desktop' && classes.isOpen}`}
     >
         <div className={classes.desktopCategoryMenuMain}>
              {Object.keys(dummyCategory).map((category: string) => {

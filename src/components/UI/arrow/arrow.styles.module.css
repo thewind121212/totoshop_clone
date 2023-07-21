@@ -1,0 +1,41 @@
+
+.nextButton {
+    display: flex;
+    position: absolute;
+    z-index: 999;
+    right: 32px;
+    top: calc(50% - 15px);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 177, 86);
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 4px 6px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.previousButton {
+    display: flex;
+    position: absolute;
+    z-index: 999;
+    left: 32px;
+    top: calc(50% - 15px);
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(0, 177, 86);
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 4px 6px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}

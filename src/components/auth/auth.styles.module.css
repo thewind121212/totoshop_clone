@@ -6,6 +6,26 @@
     box-shadow: rgba(27, 59, 78, 0.1) 0px 6px 15px 0px;
 }
 
+@media (max-width: 1500px) {
+    .auth {
+        width: 65vw;
+    }
+}
+
+@media (max-width: 982px) {
+    .auth {
+        width: 77vw ;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth {
+        width: 90vw;
+    }
+}
+
+    
+
 .authType {
     width: 100%;
     height: auto;
@@ -30,9 +50,9 @@
     justify-content: center;
     align-items: center;
     white-space: nowrap;
-    min-width: 15vw;
+    /* min-width: 15vw; */
     border-right: 1px solid rgb(222, 231, 231);
-    width: 15vw;
+    width: 35%;
     text-transform: uppercase;
 }
 
