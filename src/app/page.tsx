@@ -11,7 +11,7 @@ import News from "@/components/news/News.component"
 
 export default function Home() {
   return (
-    <div className="h-[2000px]">
+    <div className="w-full h-auto">
       {/* carousel */}
       <Carousel/>
       {/* divide hr */}

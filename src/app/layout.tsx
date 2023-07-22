@@ -4,6 +4,7 @@ import { space_grotesk } from './font/font'
 import Header from '@/components/header/Header.component'
 import SnackBar from '@/components/snack-bar/SnackBar.component'
 import Overlay from '@/components/overlay/Overlay.component'
+import Footer from '@/components/footer/Footer.component'
 //provider
 import AppProvider from '@/components/app-provider/AppProvider.component' 
 
@@ -35,6 +36,7 @@ export default function RootLayout({
       <div className="fixed w-full h-[10px] top-0 left-0" style={{zIndex: '90'}}>
         <Overlay/> 
       </div>
+      <Footer/>
         </AppProvider>
         </body>
     </html>
