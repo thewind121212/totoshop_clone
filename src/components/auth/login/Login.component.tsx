@@ -45,7 +45,7 @@ function Login({ changeAuthType }: any) {
   const dispatch = useAppDispatch();
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log(session, status);
+  // console.log(session, status);
 
   const {
     register,

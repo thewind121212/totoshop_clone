@@ -31,20 +31,26 @@ const feedbackDummyData = [
         name: 'Trí Nghĩa - Hồ Chí Minh',
         image: "/feedbacker/5.jpeg",
         hastag: '#shopping',
+    },
+    {
+        id: 6,
+        name: 'Phương Uyên - Đà Nẵng',
+        image: "/feedbacker/6.jpg",
+        hastag: '#hangout',
     }
 ]
 
 
 function FeedBack() {
   return (
-    <div className="w-full h-auto py-[50px] px-[10px] bg-[#e8e8e8] mt-[50px] flex flex-col justify-center items-center">
+    <div className="w-full h-auto py-[50px] px-[10px] bg-[#e8e8e8] mt-[50px] flex flex-col justify-center items-center ">
       <div className="w-full flex justify-center items-center">
         <div className="h-[3px] w-[50px] bg-black border-solid"></div>
         <div className="text-[26px] mx-[8px]">FEEDBACKER</div>
         <div className="h-[3px] w-[50px] bg-black border-solid"></div>
       </div>
       <div className="w-full  text-base text-center">Cùng xem sản phẩm thực tế của TOTODAY được khách hàng sử dụng và phản hồi</div>
-      <div className="w-full max-w-[1290px] grid grid-cols-5 gap-[16px] mx-auto my-[50px] ">
+      <div className="w-full max-w-[1290px] grid grid-cols-6 gap-[16px] mx-auto my-[50px] max-[800px]:grid-cols-3 max-[800px]:grid-cols-2 px-[8px]">
             {feedbackDummyData.map((item) => (
                 <div key={item.id} className="w-auto h-[360px] relative rounded-[3px] overflow-hidden group">
                     <div className="w-full h-full group-hover:scale-[1.15] duration-[350ms]">

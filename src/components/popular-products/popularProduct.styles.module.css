@@ -15,7 +15,7 @@
     height: 50px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 10px;
 }
 
@@ -81,3 +81,16 @@ padding: 5px;
     animation: s3 1s infinite linear;
   }
   @keyframes s3 {to{transform: rotate(1turn)}}
+
+
+
+
+
+  @media (max-width: 768px) {
+.popularProductsGallery {
+    width: calc(100% + 8px);
+    margin-left: 0;
+    display: flex;
+    flex-wrap: wrap ;
+}
+  }

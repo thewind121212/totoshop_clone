@@ -4,110 +4,37 @@ import classes from "./mobileCategoryMenu.styles.module.css";
 import Search from "../UI/search/Search.component";
 import { useAppDispatch, useAppSelector } from "@/redux/reduxHook";
 import { toggleCategoryMenu } from "../../redux/Features/UI/categoryMenu.slice";
+import { useQuery } from "@tanstack/react-query";
 //component
 import MainCategories from "../main-categories/MainCategories.component";
 import SubCategories from "../sub-categories/SubCategories.component";
 
-const dummyCategory: any = {
-  aoKhoac: {
-    imgPath: "/icons/aoKhoac.png",
-    name: "Áo Khoác",
-    items: {
-      "áo khoác nam": ["Áo Khoác Thun", "Aó Khoác Dù"],
-      "áo khoác nữ": ["Áo Hoodie"],
-      "áo khoác Unisex": ["Áo Khoác Bomber", "Áo Khoác Jeans"],
-    },
-  },
-  doNam: {
-    imgPath: "/icons/doNam.png",
-    name: "Đồ Nam",
-    items: {
-      "áo thun": [
-        "Áo Khoác Tay Ngắn",
-        "Aó Thun Tay Dài",
-        "Áo Thun Polo",
-        "Áo Thun Ba Lỗ",
-      ],
-      "áo Sơ mi nam": ["Áo Sơ mi tay ngắn", "Áo Sơ mi tay dài"],
-      "quần Short": [
-        "Quần Short Kaki",
-        "Quần Short Jean",
-        "Quần Short Thun",
-        "Quần Short Tây",
-      ],
-      "quần dài": [
-        "Quần Kaki",
-        "Quần Jean",
-        "Quần Thun",
-        "Quần Tây",
-        "Quần Jogger",
-      ],
-    },
-  },
-  doNu: {
-    imgPath: "/icons/doNu.png",
-    name: "Đồ Nữ",
-    items: {
-      "Áo Kiểu": [],
-      "Áo Thun": ["Áo Thun tay ngắn", "Áo Thun tay dài"],
-      "Áo Sơ mi nữ": ["Áo Sơ mi Tay Ngắn", "Áo Sơ mi Tay Dài"],
-      "Đầm nữ": [],
-      "Chân Váy": [],
-      "Quần Short": ["Quần Short Kaki", "Quần Short Jean"],
-      Yếm: [],
-      "Quần Dài": [
-        "Quần Kaki",
-        "Quần Jean",
-        "Quần Thun",
-        "Quần Tây",
-        "Quần Jogger",
-      ],
-    },
-  },
-  doUnisex: {
-    imgPath: "/icons/Unisex.png",
-    name: "Đồ Unisex",
-    items: {
-      "áo thun unisex": [
-        "Áo Khoác Thun UNISEX tay dài",
-        "Áo Khoác Thun UNISEX tay ngắn",
-        "Áo Thun UNISEX tay dài",
-        "Áo Thun UNISEX Polo",
-        "Áo Thun UNISEX Ba Lỗ",
-      ],
-      "áo sơ mi unisex": [
-        "Áo Sơ mi UNISEX tay ngắn",
-        "Áo Sơ mi UNISEX tay dài",
-      ],
-    },
-  },
-  phuKien: {
-    imgPath: "/icons/phuKien.png",
-    name: "Phụ Kiện",
-    items: {
-      Nón: ["Nón Snapback", "Nón Lưỡi Trai", "Nón Bucket", "Nón Phớt"],
-      "Thắt Lưng": [],
-      Balo: [],
-      "Túi Sách": [],
-    },
-  },
-};
-
-function MobileCategoryMenu({type} : any) {
+function MobileCategoryMenu({ type }: any) {
   //react core
-  const [categorySelected, setCategorySelected] = useState<string>("aoKhoac");
+  const [categorySelected, setCategorySelected] = useState<number>(1);
   //redux
   const dispatch = useAppDispatch();
   //function
-  const handleSelectCategory = (category: string) => {
+  const handleSelectCategory = (category: number) => {
     if (categorySelected === category) return;
     setCategorySelected(category);
   };
 
+  //use query and function query
+  const categoriesQuery = useQuery({
+    queryKey: ["categories"],
+    queryFn: () =>
+      fetch("/api/categories").then(async (res) => {
+        const data = await res.json();
+        return data.data;
+      }),
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <div
       className={`${classes.mobileCateogyMenu} ${
-        type === 'mobile' ? classes.onOpen : classes.onClose
+        type === "mobile" ? classes.onOpen : classes.onClose
       }`}
     >
       <div className={classes.close}>
@@ -130,28 +57,37 @@ function MobileCategoryMenu({type} : any) {
       <div className={classes.categories}>
         <div className={classes.categoriesWrap}>
           <div className={classes.mainCategoriesContent}>
-            {Object.keys(dummyCategory).map((category: string) => {
-              const root = dummyCategory[category];
+            {categoriesQuery.data?.map((category: any) => {
               return (
                 <MainCategories
-                  key={root.name}
-                  active={categorySelected === category}
+                  key={category.name}
+                  active={categorySelected === category.order}
                   category={category}
                   typeDevice="mobile"
-                  root={root}
-                  clickHander={handleSelectCategory}
+                  root={category}
                   hoverHander={handleSelectCategory}
+                  clickHander={() => null}
                 />
               );
             })}
           </div>
-          <div className={classes.subCategoriesContent}>
-            <SubCategories
-              header={dummyCategory[categorySelected].name}
-              items={dummyCategory[categorySelected].items}
-              typeDevice="mobile"
-            />
-          </div>
+          {categoriesQuery.data
+            ?.filter((c: any) => c.order === categorySelected)
+            .map((category: any) => {
+              return (
+                <div
+                  className={classes.subCategoriesContent}
+                  key={category.slug}
+                >
+                  <SubCategories
+                    header={category.name}
+                    items={category.subCategoryItems}
+                    breadCrumb={category.slug}
+                    typeDevice="mobile" 
+                  />
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

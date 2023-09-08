@@ -37,17 +37,25 @@ function MiddleCarousel() {
     centerMode: true,
     centerPadding: "0px",
     slidesToShow: 1,
-    variableWidth: true,
+          variableWidth: true,
     prevArrow: <PreviousArrow />,
     nextArrow: <NextArrow />,
     beforeChange: (current: any, next: any) => setActiveSlide(next),
+    responsive: [
+      {
+        breakpoint: 900,
+        settings: {
+        variableWidth: false,
+        }
+      }
+    ],
   };
 
 
 
 
   return (
-    <div className="" >
+    <div className="my-[50px]" >
       <Slider {...settings}>
         {carouselData.map((item) => (
           <div

@@ -25,7 +25,7 @@ export default function Home() {
       {/* Popular product */}
       <PopularProdcuts/>
       <MiddleCarousel/>
-      <div className="max-w-[1290px] h-auto p-[30px] mx-auto hover:scale-[1.05] duration-500 mt-[50px]">
+      <div className="max-w-[1290px] h-auto p-[0px] md:p-[30px] mx-auto hover:scale-[1.05] duration-500 mt-[50px]">
           <Image src="/collections/collection1.png" alt="collection1" width={4000} height={4000} style={{objectFit: 'contain'}} />
       </div>
         <CollectionList/> 

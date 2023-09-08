@@ -19,7 +19,8 @@
 }
 
 .desktopCategoryMenuSub {
-  width: 600px;
+  min-width: 600px;
+  width: auto;
   font-size: 0.875rem;
   padding: 10px;
 }

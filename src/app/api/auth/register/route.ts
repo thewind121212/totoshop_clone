@@ -17,12 +17,14 @@ export async function POST(req: Request) {
   const body = await req.json();
   const now: any = new Date();
   const email = body.email;
+  const phone = body.phone;
   const userVefifiedEmail = await User.findOne({ email: email });
-  if (userVefifiedEmail !== null) {
+  const userVefifiedPhone = await User.findOne({ phone: phone });
+  if (userVefifiedEmail !== null || userVefifiedPhone !== null) {
     return new Response(
       JSON.stringify({
         error: "Unauthorized",
-        message: "Email này đã được sử dụng",
+        message: "Email hoặc số điện thoại này đã được sử dụng",
       }),
       {
         status: 401,
@@ -49,13 +51,13 @@ export async function POST(req: Request) {
     if (modalFound === null) {
       const newPreUserVerify = new PreUserVerifyModal({
         ...body,
-        attemp: 0,
+        attemp: 1,
         password: hashedPassword,
       });
       isSentCheck = true;
       await newPreUserVerify.save();
       const createJwtToken = jwt.sign(
-        { email: body.email, now: now, attemp: 0 },
+        { email: body.email, now: now, attemp: 1 },
         process.env.JWT_SECRET
       );
       const emailLink = `http://${req.headers.get(
@@ -79,7 +81,7 @@ export async function POST(req: Request) {
         );
       }
       if (timeRequest > 50) {
-        const attempVerify = modalFound.attemp  !== null ? modalFound.attemp + 1 : 0;
+        const attempVerify = modalFound.attemp  !== null ? modalFound.attemp + 1 : 1;
         await PreUserVerifyModal.updateOne({
           ...body,
           password: hashedPassword,

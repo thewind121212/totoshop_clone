@@ -128,7 +128,7 @@ function Header() {
           />
           </div>
           {/* navigation */}
-          {window.innerWidth > 982 && <DesktopNavigation/>}
+          <DesktopNavigation/>
           {/* tool box */}
           <div className="flex justify-center items-center">
             <Search isMobile={false} />

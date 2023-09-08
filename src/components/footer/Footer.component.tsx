@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { isMetaProperty } from "typescript";
 
 const dummyPolicy = [
   {
@@ -74,11 +73,11 @@ function Footer() {
   return (
     <div className="w-full mt-[100px] bg-[#F9FAFA] ">
       <div className="w-full h-auto bg-[#FFF] border-b border-t">
-        <div className="w-full max-w-[1290px] h-auto p-[30px] mx-auto grid grid-cols-4 bg-[#FFF]  ">
+        <div className="w-full max-w-[1290px] h-auto p-[30px] mx-auto grid grid-cols-4 bg-[#FFF] max-[987px]:grid-cols-2 max-[560px]:grid-cols-1 max-[987px]:gap-[12px] ">
           {dummyPolicy.map((item) => (
             <div
               key={item.id}
-              className="w-full h-[71px] flex px-[16px] bg-[#FFF]"
+              className="w-full h-[71px] flex px-[16px] bg-[#FFF] "
             >
               <div className="basis-2/12 mt-[8px] ml-[8px] bg-[#FFF]">
                 <Image
@@ -98,9 +97,9 @@ function Footer() {
         </div>
       </div>
       <div className="w-full max-w-[1290px]  mx-auto">
-        <div className="w-full h-full flex ">
+        <div className="w-full h-full flex max-[876px]:flex-wrap ">
           <div
-            className="h-full basis-[29.166667%] border-r border-[#EEEEEE]
+            className="h-full basis-[29.166667%] border-r border-[#EEEEEE] max-[876px]:basis-[100%]
                 "
           >
             <div className="w-full h-auto pl-[20px] pt-[40px] pr-[30px] pb-[40px]">
@@ -153,22 +152,22 @@ function Footer() {
               </div>
             </div>
           </div>
-          <div className="h-full basis-[70.833333%] border-l border-[#EEEEEE] ">
-            <div className="w-full h-auto  pt-[40px] pb-[40px] pl-[40px]">
-              <div className="w-full h-auto flex p-[20px] bg-white border border-[#EEEEEE]">
-                <div className="basis-7/12 w-full h-[42px]">
+          <div className="h-full basis-[70.833333%] border-l border-[#EEEEEE] max-[876px]:basis-[100%]">
+            <div className="w-full h-auto  pt-[40px] pb-[40px] pl-[40px] max-[876px]:p-[12px]">
+              <div className="w-full h-auto flex p-[20px] bg-white border border-[#EEEEEE] max-[876px]:flex-wrap  ">
+                <div className="basis-7/12 w-full h-[42px] max-[876px]:basis-[100%] max-[876px]:mb-[24px]">
                   <p className="text-[16px]">Đăng ký nhận tin</p>
                   <p className="text-[12px] text-[#757575]">
                     Nhận tin qua email để không bỏ lỡ các tin tức khuyến mãi
                   </p>
                 </div>
-                <div className="basis-5/12 w-full pl-[10px] ">
+                <div className="basis-5/12 w-full pl-[10px] gap-[12px] max-[876px]:basis-[100%]">
                   <div className="h-[42px] flex w-full justify-center items-center">
                     <input
                       type="email"
                       className="pl-[10px] h-full w-full outline-none border rounded-tl-[5px] rounded-bl-[5px] border-[#00B156]"
                       name="email"
-                      placeholder="Nhập email của bạn"
+                      placeholder="Nhập Email"
                     />
                     <button className="min-w-[90px] h-full text-[13.33px] bg-[#00B156] border-[#00B156] text-[#fff] rounded-tr-[3px] rounded-br-[3px] flex justify-center items-center">
                       Đăng ký
@@ -176,63 +175,139 @@ function Footer() {
                   </div>
                 </div>
               </div>
-              <div className="w-full h-auto flex flex-col">
-                <div className="flex w-full h-auto basis-[71.666667%] ">
-                  <div className="w-full h-auto flex mt-[20px] ">
-                    <div className="basis-[28%] leading-[25px]">
-                      <div className="text-[18px]">Thông tin</div>
-                      <p className="text-[12px] text-[#00B156] ">Giới thiệu</p>
-                      <p className="text-[12px] text-[#616161] ">
-                        Liên hệ công ty
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Liên hệ hợp tác
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        {" "}
-                        Gia nhập TOTODAY
-                      </p>
-                      <p className="text-[12px] text-[#00B156]">
-                        Hệ thống cửa hàng
-                      </p>
-                    </div>
-                    <div className="basis-[38%] leading-[25px]">
-                      <div className="text-[18px] ">Chính sách</div>
-                      <p className="text-[12px] text-[#00B156]">
-                        Chính sách thành viên
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Chính sách hoàn tiền
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Chính sách sản phẩm
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Chính sách bảo mật
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Chính sách kiểm hàng
-                      </p>
-                      <p className="text-[12px] text-[#00B156]">
-                        Chính sách đổi hàng - bảo hành
-                      </p>
-                    </div>
-                    <div className="basis-[34%] leading-[25px]">
-                      <div className="text-[18px]">Hỏi đáp</div>
-                      <p className="text-[12px] text-[#616161]">
-                        Thanh toán và vận chuyển
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Hướng dẫn chọn size
-                      </p>
-                      <p className="text-[12px] text-[#616161]">
-                        Kiểm tra thông tin đơn hàng
-                      </p>
+              <div className="w-full h-auto flex mt-[20px] max-[876px]:flex-wrap">
+                <div className="w-full h-auto flex flex-col basis-[71.666667%] max-[876px]:basis-[100%]">
+                  <div className="flex w-full h-auto flex-col pt-[8px] pl-[8px]  ">
+                    <div className="w-full h-auto flex max-[876px]:flex-wrap">
+                      <div className="basis-[28%] leading-[25px] max-[876px]:basis-[100%]">
+                        <div className="text-[18px]">Thông tin</div>
+                        <p className="text-[12px] text-[#00B156] ">
+                          Giới thiệu
+                        </p>
+                        <p className="text-[12px] text-[#616161] ">
+                          Liên hệ công ty
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Liên hệ hợp tác
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          {" "}
+                          Gia nhập TOTODAY
+                        </p>
+                        <p className="text-[12px] text-[#00B156]">
+                          Hệ thống cửa hàng
+                        </p>
+                      </div>
+                      <div className="basis-[38%] leading-[25px] max-[876px]:basis-[100%]">
+                        <div className="text-[18px] ">Chính sách</div>
+                        <p className="text-[12px] text-[#00B156]">
+                          Chính sách thành viên
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Chính sách hoàn tiền
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Chính sách sản phẩm
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Chính sách bảo mật
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Chính sách kiểm hàng
+                        </p>
+                        <p className="text-[12px] text-[#00B156]">
+                          Chính sách đổi hàng - bảo hành
+                        </p>
+                      </div>
+                      <div className="basis-[34%] leading-[25px] max-[876px]:basis-[100%]">
+                        <div className="text-[18px]">Hỏi đáp</div>
+                        <p className="text-[12px] text-[#616161]">
+                          Thanh toán và vận chuyển
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Hướng dẫn chọn size
+                        </p>
+                        <p className="text-[12px] text-[#616161]">
+                          Kiểm tra thông tin đơn hàng
+                        </p>
+                      </div>
                     </div>
                   </div>
-                    <div className="w-full h-auto"></div>
+                  <div className="w-full h-auto my-[24px] flex justify-center items-center ">
+                    <div className="w-full max-w-[50%] h-auto">
+                      <div className="w-[90%] h-full border border-[#EEEEEE] flex gap-[10px] py-[14px] rounded-[4px] justify-center items-center bg-[#fff] ">
+                        <Image
+                          src="/icons/bill.svg"
+                          alt="bill"
+                          width={15}
+                          height={20}
+                        />
+                        <p className="text-[14px]">Tra cứu đơn hàng</p>
+                      </div>
+                    </div>
+                    <div className="w-full max-w-[50%] h-auto">
+                      <div className="w-[90%] h-full border-[2px] border-[#00B156] flex gap-[10px] py-[14px] rounded-[4px] justify-center items-center ">
+                        <Image
+                          src="/icons/star.svg"
+                          alt="bill"
+                          width={18}
+                          height={20}
+                        />
+                        <p className="text-[14px] text-[#00B156]">
+                          Góp ý - Than phiền
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className=""></div>
+                <div className="w-full h-auto basis-[28.333333%] border-l border-[#EEEEEE] max-[876px]:basis-[100%] ">
+                  <div className="w-full h-auto pt-[8px] pl-[8px] flex flex-col max-[876px]:flex-row max-[876px]:justify-center max-[876px]:items-center">
+                    <div className="w-full h-auto pt-[4px] pb-[8px] mb-[8px] flex flex-col gap-[8px] border-b border-[#EEEEEE] ">
+                      <div className="text-[12px] text-[#616161]">
+                        Mua hàng trực tuyến
+                      </div>
+                      <div className="text-[12px]">
+                        <a
+                          href="tel:1900 633 501"
+                          className="text-[12px] text-[#00B156]"
+                        >
+                          1900.633.501
+                        </a>
+                        <span>(T2-T6 8h30 - 17h30)</span>
+                      </div>
+                      <div className="text-[12px]">
+                        <a
+                          href="tel:0938 803 633"
+                          className="text-[12px] text-[#00B156]"
+                        >
+                          0938.803.633
+                        </a>
+                        <span>(24/7)</span>
+                      </div>
+                      <p className="text-[12px]">sales.online@totoday.vn</p>
+                    </div>
+                    <div className="w-full h-auto pt-[4px] pb-[8px] mb-[8px] flex flex-col gap-[8px]  ">
+                      <p className="text-[12px] text-[#616161]">
+                        Hotline góp ý
+                      </p>
+                      <a
+                        href="tel:0908 18 12 89"
+                        className="text-[12px] text-[#00B156]"
+                      >
+                        0908.18.12.89
+                      </a>
+                      <p className="text-[12px]">cskh@totoday.vn</p>
+                    </div>
+                    <div className="h-[50px] w-1/2 overflow-clip object-contain relative max-[876px]:hidden">
+                      <Image
+                        src="/icons/tickxanh.png"
+                        alt="tich-xanh"
+                        fill={true}
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

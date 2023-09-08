@@ -36,4 +36,14 @@
     transform: translateX(-10vw) scale(0.8) !important;
 }
 
+@media (max-width: 900px) {
+    .wrap {
+        width: 100vw !important;
+    }
+    .imageWrap {
+        width: 100vw;
+        max-height: 400px;
+    }
+}
+    
 

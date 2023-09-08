@@ -32,16 +32,23 @@ function CollectionList() {
           <div
             className="w-[185px] h-[54px] min-w-[64px] text-base py-[8px] px-[15px] border rounded-[3px] flex
            justify-center items-center border-black hover:text-white hover:bg-[#00B156] hover:border-[#00B156]
-            duration-300 cursor-pointer "
+            duration-300 cursor-pointer max-[768px]:hidden "
           >
             Xem tất cả
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-[16px] mt-[16px] ">
+      <div className="grid grid-cols-3 gap-[16px] mt-[16px] max-[768px]:grid-cols-1 max-[768px]:px-[8px] ">
         {collectionList.map((item) => (
             <CollectionCard key={item.id} item={item} type="collection"/>
         ))}
+      </div>
+      <div 
+            className="w-1/2 mx-auto mt-[50px] h-[54px] min-w-[64px] text-base py-[8px] px-[15px] border rounded-[3px] flex
+           justify-center items-center border-black hover:text-white hover:bg-[#00B156] hover:border-[#00B156]
+            duration-300 cursor-pointer min-[768px]:hidden "
+>
+            Xem tất cả
       </div>
     </div>
   );

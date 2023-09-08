@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import classes from "./popularProduct.styles.module.css";
 import CardProduct from "../card-product/CardProduct.component";
-import { object } from "yup";
+import Spinner from "../UI/spinner/Spinner.ui";
 
 const popularProductId = [
   "37880133",
@@ -55,22 +55,17 @@ function PopularProducts() {
         <div className={classes.popularProductsHeaderText}>
           SẢN PHẨM NỔI BẬT
         </div>
-        <div className={classes.popularProductsHeaderMenu}>
-          <div className={classes.popularProductsHeaderMenuItem}>đồ nam</div>
-          <div className={classes.popularProductsHeaderMenuItem}>đồ nữ </div>
-          <div className={classes.popularProductsHeaderMenuItem}>unisex</div>
-          <div className={classes.popularProductsHeaderMenuItem}> áo khoác</div>
-        </div>
       </div>
       <div
         className={classes.popularProductsGallery}
         style={{ height: popularProductsQuery.isLoading ? "815px" : "auto" }}
       >
-        {popularProductsQuery.isLoading && <div className={classes.spinner} />}
+        {popularProductsQuery.isLoading && <Spinner/>}
         {popularProductsQuery.data?.map((product: any) => {
           return (
             <CardProduct
               key={product.id}
+              like="0"
               id={product.id}
               thumbnail={product.thumbnail}
               productName={product.name}
