@@ -22,7 +22,7 @@ function MainCategories({root, clickHander, category, active, typeDevice, hoverH
         />
         <p className={`${classes.mainCategoryText} ${active && classes.activeText}`}>{root.name.toUpperCase()}</p>
         {typeDevice !== 'mobile' && <Image src="/icons/chevron-right.png" alt="arrow-right" width={8} height="12" style={{
-          objectFit: "contain",
+          objectFit: "contain", height: 'auto', width: 'auto',
         }}/>}
       </div>
     </Link>

@@ -125,7 +125,7 @@ async function ProductCategory({ productsRef, params }: any) {
                 like={item.likes}
                 thumbnail={item.thumbnail_img}
                 productName={item.name}
-                productPrice=""
+                productPrice={null}
                 colorArray={[]}
               />
             );

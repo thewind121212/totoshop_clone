@@ -11,6 +11,7 @@ function NewsCard({ item }: any) {
           alt={item.title}
           width={700}
           height={400}
+          priority
           style={{ objectFit: "cover" }}
         />
       </div>

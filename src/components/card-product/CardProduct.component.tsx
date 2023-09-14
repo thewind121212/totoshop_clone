@@ -2,9 +2,19 @@
 import { useState, useRef } from "react";
 import classes from "./cardProduct.styles.module.css";
 import { useQuery } from "@tanstack/react-query";
-
 import Image from "next/image";
-import { ref } from "yup";
+import { object } from "yup";
+
+
+//helper function organize data for viewer
+
+const organizeData = (data: any) => {
+  const colorArray: any[] = [];
+  for (const [key, value] of Object.entries<{[key: string]: {value: any}}>(data.productInfo)) {
+     colorArray.push(value.colorImage)
+  }
+  return {colors: colorArray};
+}
 
 function CardProduct({
   thumbnail,
@@ -17,30 +27,33 @@ function CardProduct({
   id: string;
   like: string;
   thumbnail: string;
-  productName: string;
-  productPrice: string;
-  colorArray: any[];
+  productName: string | null;
+  productPrice: string | null;
+  colorArray: any[] ;
 }) {
   const [image, setImage] = useState<any>(thumbnail);
   const timeoutRef = useRef<any>(null);
   const [imageLoadingState, setImageLoadingState] = useState<any>(true);
-  console.log(id)
   //run usequery
-  // const productDetailQuery = useQuery({
-  //   queryKey: ["productDetail", id],
-  //   queryFn: () => 
-  //     fetch(`/api/product`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ id: id }),
-  //     }).then(async (res) => {
-  //       const data = await res.json();
-  //       return data.data;
-  //     }),
-  //     refetchOnWindowFocus: false,
-  // })
+  const productDetailQuery = useQuery({
+    queryKey: ["productDetail", id],
+    queryFn: () => 
+      fetch(`/api/productDetail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }).then(async (res) => {
+        const dataObject = await res.json();
+        const data = organizeData(dataObject.data);
+        return {
+          colors: colorArray.length === 0 ? data.colors : colorArray,
+          price: dataObject.data.valueRange,
+        } ;
+      }),
+      refetchOnWindowFocus: false,
+  })
 
 
 
@@ -73,11 +86,12 @@ function CardProduct({
                 alt="thumbnail"
                 src={image}
                 width={500}
+                loading="eager"
                 height={200}
                 style={{
                   aspectRatio: "1/1",
                   objectFit: "cover",
-                  objectPosition: '50% 15%'
+                  objectPosition: '50% 50%'
                 }}
                 onLoadingComplete={() => {setImageLoadingState(false)}}
               />
@@ -88,7 +102,7 @@ function CardProduct({
             <div className={classes.cardProductPreview}>
               <div className={classes.cardProductPreviewWrap}>
 
-                {colorArray.map((item, index) => {
+                {productDetailQuery.isLoading || productDetailQuery.data?.colors === undefined ? <div>Loading...</div> :  productDetailQuery.data.colors.map((item, index) => {
                   const isActived = item === image ? classes.active : "";
                   return (
                     <div
@@ -96,7 +110,7 @@ function CardProduct({
                       key={index}
                       onClick={() => handleChosePreview(item)}
                     >
-                      <Image src={item} alt={item} width={25} height={20} />
+                      <Image src={item} alt={item} width={500} height={200} style={{objectFit: 'cover', aspectRatio: '1/1'}} loading="eager"/>
                     </div>
                   );
                 })}
@@ -111,13 +125,17 @@ function CardProduct({
             <div className={classes.cardProductDownWrap}>
               <div className={classes.cardProductDownText}>{productName}</div>
               <div className={classes.cardProductDownPriceCart}>
-                <div className={classes.cardProductPrice}>{productPrice}</div>
+                <div className={classes.cardProductPrice}>{productPrice !== null ? productPrice : productDetailQuery.isLoading ? <div>loading</div>
+                : `${productDetailQuery.data?.price.min}đ`       
+              }</div>
                 <div className={classes.cardProductAddCart}>
                   <Image
                     src="/icons/addCart.svg"
                     alt="cart-add"
                     width={12}
                     height={11}
+                    style={{width: 'auto', height: 'auto'}}
+                    priority
                   />
                   <div className={classes.cardProductAddCartText}>Thêm</div>
                 </div>

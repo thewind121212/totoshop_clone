@@ -80,13 +80,15 @@ function Footer() {
               className="w-full h-[71px] flex px-[16px] bg-[#FFF] "
             >
               <div className="basis-2/12 mt-[8px] ml-[8px] bg-[#FFF]">
+                <div className="w-[33px] relative aspect-[1/1]">
                 <Image
                   src={item.icon}
                   alt="policy"
-                  width={30}
-                  height={30}
-                  style={{ objectFit: "contain" }}
+                  sizes="auto"
+                  fill={true}
+                  loading="lazy"
                 />
+                </div>
               </div>
               <div className="basis-10/12 mt-[8px] ml-[8px] bg-[#FFF]">
                 <p className="text-[14px] text-[black]">{item.headText}</p>
@@ -131,7 +133,7 @@ function Footer() {
                     alt="social"
                     width={32}
                     height={32}
-                    style={{ objectFit: "contain" }}
+                    style={{ objectFit: "contain", height: "auto" }}
                   />
                 ))}
               </div>
@@ -145,7 +147,7 @@ function Footer() {
                       alt="payment"
                       width={item.width}
                       height={20}
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: "contain", height: "auto" }}
                     />
                   ))}
                 </div>
@@ -236,23 +238,27 @@ function Footer() {
                   <div className="w-full h-auto my-[24px] flex justify-center items-center ">
                     <div className="w-full max-w-[50%] h-auto">
                       <div className="w-[90%] h-full border border-[#EEEEEE] flex gap-[10px] py-[14px] rounded-[4px] justify-center items-center bg-[#fff] ">
+                        <div className="w-[15px] h-[20px] relative">
                         <Image
                           src="/icons/bill.svg"
                           alt="bill"
-                          width={15}
-                          height={20}
+                          fill={true}
+                          sizes="auto"
                         />
+                        </div>
                         <p className="text-[14px]">Tra cứu đơn hàng</p>
                       </div>
                     </div>
                     <div className="w-full max-w-[50%] h-auto">
                       <div className="w-[90%] h-full border-[2px] border-[#00B156] flex gap-[10px] py-[14px] rounded-[4px] justify-center items-center ">
+                        <div className="w-[18px] h-[20px] relative">
                         <Image
                           src="/icons/star.svg"
-                          alt="bill"
-                          width={18}
-                          height={20}
+                          alt="star"
+                          fill={true}
+                          sizes="auto"
                         />
+                        </div>
                         <p className="text-[14px] text-[#00B156]">
                           Góp ý - Than phiền
                         </p>
@@ -300,6 +306,7 @@ function Footer() {
                     </div>
                     <div className="h-[50px] w-1/2 overflow-clip object-contain relative max-[876px]:hidden">
                       <Image
+                        sizes="auto"
                         src="/icons/tickxanh.png"
                         alt="tich-xanh"
                         fill={true}

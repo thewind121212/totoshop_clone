@@ -11,7 +11,7 @@ function NewsCardSmall({item, type}: any) {
             " style={{boxShadow:'rgba(19, 18, 18, 0.1) 2px 2px 11px'}}>
               <div className="w-full h-auto flex flex-wrap">
                 <div className="basis-5/12  ">
-                  <Image src={item.image} alt={item.headerText} height={200} width={200} style={{objectFit: 'contain'}} />
+                  <Image src={item.image} alt={item.headerText} height={200} width={200} priority style={{objectFit: 'contain'}} />
                 </div> 
                 <div className="basis-7/12 p-[8px] flex-grow-0">
                   <p className='text-[11px] mb-[10px] text-[#00b156] uppercase cursor-pointer'>{type}</p>

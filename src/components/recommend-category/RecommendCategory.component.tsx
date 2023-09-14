@@ -50,13 +50,14 @@ function RecommendCategory() {
             <div className={classes.rCategoryItem} key={item.id}>
               <div className={classes.rCategoryItemWrap}>
                 <div className={classes.rCategoryItemImage}>
+                  <div className="w-[45px] h-[45px] relative">
                   <Image
                     src={item.icon}
                     alt="icon"
-                    width={45}
-                    height={45}
-                    style={{ objectFit: "contain" }}
+                    fill={true}
+                    sizes="auto"
                   />
+                  </div>
                 </div>
                 <div className={classes.rCategoryItemHead}>{item.header}</div>
                 <div className={classes.rCategoryItemSub}>

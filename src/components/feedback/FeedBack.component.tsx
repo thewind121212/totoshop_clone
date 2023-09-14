@@ -53,8 +53,8 @@ function FeedBack() {
       <div className="w-full max-w-[1290px] grid grid-cols-6 gap-[16px] mx-auto my-[50px] max-[800px]:grid-cols-3 max-[800px]:grid-cols-2 px-[8px]">
             {feedbackDummyData.map((item) => (
                 <div key={item.id} className="w-auto h-[360px] relative rounded-[3px] overflow-hidden group">
-                    <div className="w-full h-full group-hover:scale-[1.15] duration-[350ms]">
-                    <Image src={item.image} alt={item.name}  fill={true}  style={{objectFit: 'cover'}} />
+                    <div className="w-full h-full group-hover:scale-[1.15] duration-[350ms] relative">
+                    <Image src={item.image} alt={item.name}  fill={true} sizes="auto" style={{objectFit: 'cover'}} />
                     </div>
                     <div className="w-full absolute bottom-0 p-[20px]">
                         <p className="text-[14px] text-[#00B156]">{item.hastag}</p>   
