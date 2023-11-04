@@ -1,30 +1,8 @@
 "use client";
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import classes from "./popularProduct.styles.module.css";
+import React, { useEffect } from "react";
 import CardProduct from "../card-product/CardProduct.component";
 import Spinner from "../UI/spinner/Spinner.ui";
 
-const popularProductId = [
-  "37880133",
-  "37880120",
-  "37880138",
-  "37880145",
-  "37880459",
-  "37880373",
-  "37880386",
-  "37880397",
-];
-
-function PopularProducts() {
-  const popularProductsQuery = useQuery({
-    queryKey: ["popular-products"],
-    queryFn: () =>
-      fetch("/api/homepage/popular-products").then((res) =>
-        processDataFetched(res)
-      ),
-    refetchOnWindowFocus: false,
-  });
 
   const processDataFetched = async (data: any) => {
     const dataJson = await data.json();
@@ -35,7 +13,6 @@ function PopularProducts() {
       Object.values(dataJson[i].color).map((item: any) => {
         colorArray.push(item.colorImage);
       });
-
 
       const dataPatern = {
         id: dataJson[i].id,
@@ -49,31 +26,52 @@ function PopularProducts() {
     return dataReturn;
   };
 
+function PopularProducts() {
+   const [product, setProduct] = React.useState<any>([]);
+
+
+  useEffect(() => {
+    const fetchPopularProducts = async () => {
+      const data = await fetch("/api/homepage/popular-products");
+      const afterData =  await processDataFetched(data);
+      setProduct(afterData)
+    }  
+
+    fetchPopularProducts()
+
+  },[])
+
+
+
   return (
-    <div className={classes.popularProductsRoot}>
-      <div className={classes.popularProductsHeader}>
-        <div className={classes.popularProductsHeaderText}>
+    <div className="w-full h-auto flex flex-col items-center justify-center max-w-[1290px] mt-4 mx-auto my-0">
+      <div className="w-full h-[50px] flex items-center justify-center px-2.5 py-0">
+        <div className="text-[26px] font-semibold leading-normal">
           SẢN PHẨM NỔI BẬT
         </div>
       </div>
       <div
-        className={classes.popularProductsGallery}
-        style={{ height: popularProductsQuery.isLoading ? "815px" : "auto" }}
+        className="w-[calc(100%_+_8px)] flex flex-wrap ml-2"
+        style={{ height: product.length === 0 ? "815px" : "auto" }}
       >
-        {popularProductsQuery.isLoading && <Spinner/>}
-        {popularProductsQuery.data?.map((product: any) => {
-          return (
-            <CardProduct
-              key={product.id}
-              like="0"
-              id={product.id}
-              thumbnail={product.thumbnail}
-              productName={product.name}
-              productPrice={product.price + "đ"}
-              colorArray={product.colorArray}
-            />
-          );
-        })}
+        {product.length === 0 ? (
+          <Spinner />
+        ) : (
+          product.map((product: any) => {
+            return (
+              <CardProduct
+                key={product.id}
+                like="0"
+                id={product.id}
+                thumbnail={product.thumbnail}
+                productName={product.name}
+                price={{ min: product.price, max: product.price }}
+                colorArray={product.colorArray}
+                product={[]}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );

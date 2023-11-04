@@ -1,0 +1,117 @@
+.customRangeSlider {
+    color: transparent;
+    background: transparent;
+    appearance: none;
+    height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 15px;
+    width: 90%;
+}
+
+.customRangeSlider::-webkit-slider-runnable-track {
+    position: relative;
+    appearance: none;
+    border-radius: 20px;
+    height: 8px;
+    background-color: rgb(102, 102, 102, 0.4);
+}
+
+.customRangeSlider::-webkit-slider-thumb {
+	--clip-edges: 1px;
+	--thumb-height: 20px; 
+    --thumb-width: 20px;
+	--track-height: 7px;
+    position: relative;
+    appearance: none;
+    --thumb-radius: calc((var(--thumb-height) * 0.5) - 1px);
+	--clip-top: calc((var(--thumb-height) - var(--track-height)) * 0.5 - 0.5px);
+	--clip-bottom: calc(var(--thumb-height) - var(--clip-top));
+	--clip-further: calc(100% + 30px);
+	--box-fill: calc(-100vmax - 21px) 0 0
+		100vmax #00b165;
+	width: var(--thumb-width, var(--thumb-height));
+	background: linear-gradient(currentColor 0 0) scroll no-repeat left center /
+		50% calc(var(--track-height) + 1px);
+	box-shadow: var(--box-fill);
+	border-radius: var(--thumb-width, var(--thumb-height));
+	background-color: white;
+    border: #00b165 solid 1px;
+    height: 20px;
+    margin-top: -6px;
+
+	filter: brightness(100%);
+	clip-path: polygon(
+		100% -1px,
+		var(--clip-edges) -1px,
+		0 var(--clip-top),
+		-100vmax var(--clip-top),
+		-100vmax var(--clip-bottom),
+		0 var(--clip-bottom),
+		var(--clip-edges) 100%,
+		var(--clip-further) var(--clip-further)
+	);
+}
+.customRangeSlider::-moz-range-thumb {
+    position: relative;
+    appearance: none;
+    border-radius: 20px;
+    height: 8px;
+    background-color: rgb(102, 102, 102, 0.4);
+}
+
+
+/* moz */
+
+.customRangeSlider::-moz-range-track,
+.customRangeSlider::-moz-range-thumb {
+	appearance: none;
+	transition: all ease 100ms;
+}
+
+.customRangeSlider::-moz-range-track,
+.customRangeSlider::-moz-range-thumb,
+.customRangeSlider::-moz-range-progress {
+	background: #fff0;
+}
+
+.customRangeSlider::-moz-range-thumb {
+	background: white;
+    border: #00b165 solid 1px;
+	width: 20px;
+    height: 20px;
+	border-radius: 50%;
+	cursor: grab;
+}
+
+.customRangeSlider:active::-moz-range-thumb {
+	cursor: grabbing;
+}
+
+.customRangeSlider::-moz-range-track {
+	width: 100%;
+	background: rgb(102,102,102, 0.4)
+}
+
+.customRangeSlider::-moz-range-progress {
+	appearance: none;
+	background: #00b165;
+	transition-delay: 30ms;
+}
+
+.customRangeSlider::-moz-range-track,
+.customRangeSlider::-moz-range-progress {
+	height: 8px;
+	border-radius: 7px;
+}
+
+.customRangeSlider::-moz-range-thumb,
+.customRangeSlider::-moz-range-progress {
+	filter: brightness(100%);
+}
+
+.customRangeSlider:active::-moz-range-thumb,
+.customRangeSlider:active::-moz-range-progress {
+	filter: brightness(var(--brightness-down));
+}
+

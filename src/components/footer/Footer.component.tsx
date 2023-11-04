@@ -71,7 +71,7 @@ const dummyPayment = [
 
 function Footer() {
   return (
-    <div className="w-full mt-[100px] bg-[#F9FAFA] ">
+    <div className="w-full bg-[#F9FAFA] ">
       <div className="w-full h-auto bg-[#FFF] border-b border-t">
         <div className="w-full max-w-[1290px] h-auto p-[30px] mx-auto grid grid-cols-4 bg-[#FFF] max-[987px]:grid-cols-2 max-[560px]:grid-cols-1 max-[987px]:gap-[12px] ">
           {dummyPolicy.map((item) => (

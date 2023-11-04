@@ -1,136 +1,257 @@
-import Link from "next/link";
+"use client";
+//core libraries
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useAppSelector, useAppDispatch } from "@/redux/reduxHook";
+import {
+  changeFilterAllAttribute,
+  toggleFilterActive,
+  toggleOpenFilterSlider,
+} from "@/redux/Features/Filter/filter.slice";
+//components
 import CardProduct from "../card-product/CardProduct.component";
-import { getFullCategories } from "@/app/api/categories/route";
+import PageNavigate from "../page-navigate/PageNavigate.component";
+import FilterSidebar from "../filter-sidebar-container/FilterSidebarContainer.component";
+import CategoryController from "../category-controller/CategoryController.component";
+import MixProducts from "../mix-products/MixProducts.component";
+// helper
+import { generatePagination } from "@/utils/general-helper/helper";
+import { ProductsLoading } from "@/app/[...category]/loading";
 
-async function ProductCategory({ productsRef, params }: any) {
-  const products = await productsRef;
-  const { data, totalProducts, page } = products;
-  let subCategory: any[] = [];
+function ProductCategory({
+  products,
+  breadCrum,
+  subCategories,
+  categories,
+  paramsObject,
+  attributes,
+  filterParam,
+  orderBy,
+}: any) {
+  const { data, totalProducts, page, totalPage } = products;
+  const [loading, setLoading] = useState(true);
 
-  let breadCrum: any = [];
 
-  data.breadCrum.map((item: any, index: number) => {
-    const restLink = params.category.slice(1, index + 1);
-    const href = restLink.join("/");
-    breadCrum.push({
-      name: item.toUpperCase(),
-      link: index === 0 ? "/" : "category/" + href,
-    });
-  });
+  const store = useAppSelector((state) => state.filterStatus);
+  const dispatch = useAppDispatch();
 
-    const paramQuery = [...params.category];
-    paramQuery.shift();
-    const dataCategories = await getFullCategories();
-    const category = dataCategories.data.find(
-      (item: any) => item.slug === paramQuery[0]
-    );
-    if (paramQuery.length === 1) {
-      category.subCategoryItems.map((item: any) => {
-        const name = item.name.split(" ");
-        name.pop();
-        const completeName = name.join(" ");
+  useEffect(() => {
+    dispatch(changeFilterAllAttribute(filterParam));
+  }, [filterParam, dispatch]);
 
-        const buildChoseLink = {
-          name: completeName.toUpperCase(),
-          link: `/category/${paramQuery[0]}/${item.slug}`,
-        };
-        subCategory.push(buildChoseLink);
-      });
-    }
+  const router = useRouter();
+  const pagination = generatePagination(page, totalPage);
+  const pathName = usePathname();
+  let categoriesTree: any = categories.subCategoryItems;
 
-    if (paramQuery.length === 2 || paramQuery.length === 3) {
-      const detailCategory = category.subCategoryItems.find(
-        (item: any) => item.slug === paramQuery[1]
-      );
-      detailCategory.detailCategoryItems.map((item: any) => {
-        const name = item.name.split(" ");
-        name.pop();
-        const completeName = name.join(" ");
-        const buildChoseLink = {
-          name: completeName.toUpperCase(),
-          link: `/category/${paramQuery[0]}/${paramQuery[1]}/${item.slug}`,
-        };
-        subCategory.push(buildChoseLink);
-      });
+  const timer: any = useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      dispatch(toggleFilterActive(false));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  let filterSeachParam: any = "";
+  if (store.filterActive) {
+    filterSeachParam = `&filter=${btoa(JSON.stringify(store))}`;
   }
 
-  // const data = await products
+  let orderSeachParam: any = "";
+  if (orderBy !== "default") {
+    orderSeachParam = `&order=${orderBy}`;
+  }
+
+  const changePageHandler = (actions: string, targetPage: any | null) => {
+    if (
+      actions === "changePage" &&
+      targetPage !== page &&
+      targetPage !== "..."
+    ) {
+      setLoading(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTimeout(() => {
+        router.push(
+          `${pathName}?page=${targetPage}${orderSeachParam}${filterSeachParam}`
+        );
+      }, 450);
+    }
+    if (actions === "next" && page < totalPage) {
+      setLoading(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTimeout(() => {
+        router.push(`${pathName}?page=${page + 1}${filterSeachParam}`);
+      }, 450);
+    }
+    if (actions === "prev" && page > 1) {
+      setLoading(true);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setTimeout(() => {
+        router.push(`${pathName}?page=${page - 1}${filterSeachParam}`);
+      }, 450);
+    }
+  };
+
+  if (paramsObject.main !== "none") {
+    categoriesTree = categories.subCategoryItems.filter(
+      (item: any) => item.slug === paramsObject.main
+    );
+  }
+
+  const onFilterSubmit = (payload: null | string = null) => {
+    let filter: any = null;
+    filter = { ...store };
+    if (payload == "clearFilter") {
+      dispatch(toggleFilterActive(false));
+      filter = {
+        filterSliderOpen: false,
+        filterActive: false,
+        subCategory: [],
+        colorAttribute: [],
+        sizeAttribute: [],
+        priceAttribute: "0",
+      };
+    }
+    if (!filter.filterActive) {
+      router.push(`${pathName}`);
+      return;
+    }
+    filter.filterSliderOpen = false;
+    const filterEncode = btoa(JSON.stringify(filter));
+    if (filterParam !== null) {
+      const filterParamEncode = btoa(JSON.stringify(filterParam));
+      if (filterEncode === filterParamEncode) {
+        return;
+      }
+    }
+
+    setLoading(true);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    setTimeout(() => {
+      router.push(`${pathName}?filter=${filterEncode}${orderSeachParam}`);
+      dispatch(toggleOpenFilterSlider());
+    }, 200);
+  };
+
+  let dataSlice : any[] = []
+  if (data.products.length > 20) {
+   dataSlice =  data.products.slice(0,20)
+  }  
+
   return (
-    <div className="w-full h-auto">
-      <div className="w-full max-w-[1200px] h-auto mx-auto ">
-        {/* category interact loading */}
-        <div className="py-6 px-[14px] h-auto ">
-          <div className="w-full h-full flex ">
-            <div className="w-auto h-auto basis-8/12 ">
-              <div className="w-full">
-                <div className="m-2 w-[100%] flex">
-                  {breadCrum.map((item: any, index: number) => {
-                    return (
-                      <>
-                        <Link
-                          className="hover:text-[#00b156] duration-100"
-                          key={index}
-                          href={item.link}
-                        >
-                          {item.name}
-                        </Link>
-                        <div className="mx-2">
-                          {breadCrum.length - 1 == index ? "" : "/"}
-                        </div>
-                      </>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="w-full flex justify-start gap-[5px] flex-wrap">
-                {subCategory.map((item: any, index: number) => {
-                  return (
-                    <Link
-                      href={item.link}
-                      className="py-[16px] px-[25px] w-[auto] h-[auto] flex items-center justify-center bg-slate-100"
-                      style={{
-                        boxShadow:
-                          "    box-shadow: 0 4px 4px rgba(99,109,126,.08)",
-                      }}
-                      key={index}
-                    >
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="w-auto  basis-4/12">
-              <div className="w-full h-1/2 flex justify-end items-center">
-                <div className="m-2">
-                  {breadCrum[breadCrum.length - 1].name}
-                </div>
-                <div className="">/</div>
-                <div className="m-2 ">{`Trang ${page} - ${totalProducts} sản phẩm`}</div>
-              </div>
-              <div className="w-full h-1/2 flex justify-between items-center">
-                <div className="m-2 w-[30%] ">order</div>
-                <div className="m-2 w-[30%] ">filter</div>
-              </div>
-            </div>
-          </div>
+    <div className="w-full h-auto ">
+      <div className="w-full max-w-[1440px] h-auto mx-auto">
+        {/* filter sidebar overlay */}
+        <div
+          className="w-[100vw] min-h-[100vh] fixed top-0 left-0 z-[991] translate-x-[0] flex justify-end bg-[#00000080]"
+          style={{
+            opacity: store.filterSliderOpen ? 1 : 0,
+            transition: "all 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+            visibility: store.filterSliderOpen ? "visible" : "hidden",
+          }}
+        >
+          <FilterSidebar
+            isFilterSidebarOpen={store.filterSliderOpen}
+            menuCategory={categoriesTree}
+            attributes={attributes.data}
+            filterStatus={store.filterActive}
+            filterSubmit={onFilterSubmit}
+          />
+          <div
+            className="min-h-[100vh] w-fill translate-x-[-360px]"
+            style={{
+              transition: "all 225ms",
+              width: store.filterSliderOpen ? "calc(100vw - 360px)" : "0px",
+            }}
+            onClick={() => dispatch(toggleOpenFilterSlider())}
+          ></div>
         </div>
-        {/* category display loadin*/}
-        <div className="w-full h-auto flex flex-wrap">
-          {data.products.map((item: any, index: any) => {
-            return (
-              <CardProduct
-                key={item.id}
-                id={item.id}
-                like={item.likes}
-                thumbnail={item.thumbnail_img}
-                productName={item.name}
-                productPrice={null}
-                colorArray={[]}
-              />
-            );
-          })}
-        </div>
+        {/* category controller */}
+        <CategoryController
+          breadCrum={breadCrum}
+          subCategories={subCategories}
+          page={page}
+          totalProducts={totalProducts}
+          paramsObject={paramsObject}
+          openFilterSideBar={() => dispatch(toggleOpenFilterSlider())}
+          filterSearchParam={filterSeachParam}
+          patchName={pathName}
+          orderBy={orderBy}
+          setLoading={() => setLoading(true)}
+          filterActive={store.filterActive}
+          clearFilter={() => {
+            onFilterSubmit("clearFilter");
+          }}
+        />
+
+        {loading ? (
+          <ProductsLoading />
+        ) : (
+          <>
+            {/* block 1 */}
+            <div className="max-w-[1200px] w-auto h-auto flex flex-wrap m-auto">
+              {data.products.map((item: any, index: any) => {
+                if (index > 19) return;
+                return (
+                  <CardProduct
+                    key={item.rootId}
+                    id={item.rootId}
+                    like={item.like}
+                    price={item.valueRange}
+                    thumbnail={item.thumbnail}
+                    productName={item.name}
+                    colorArray={null}
+                    product={item}
+                  />
+                );
+              })}
+            </div>
+            {/* block mix */}
+            <MixProducts />
+            {/* block 2 */}
+            <div className="max-w-[1200px] w-auto h-auto flex flex-wrap m-auto">
+              {dataSlice.map((item: any, index: any) => {
+                return (
+                  <CardProduct
+                    key={item.rootId}
+                    id={item.rootId}
+                    like={item.like}
+                    price={item.valueRange}
+                    thumbnail={item.thumbnail}
+                    productName={item.name}
+                    colorArray={null}
+                    product={item}
+                  />
+                );
+              })}
+              </div>
+            {/* end products list */}
+            <PageNavigate
+              totalPage={totalPage}
+              pagination={pagination}
+              changePageHandler={changePageHandler}
+              page={page}
+            />
+          </>
+        )}
       </div>
     </div>
   );

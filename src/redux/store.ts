@@ -6,13 +6,16 @@ import categoryMenuSlice from './Features/UI/categoryMenu.slice'
 import snackBarSlice from './Features/UI/snackBar.slice'
 //Auth Global State
 import registerSlice from './Features/Auth/auth.slice'
+//Filter Global State
+import filterSlice from './Features/Filter/filter.slice'
 
 
-export const store = configureStore({
+export const store  = configureStore({
   reducer: {
     categoryMenuStatus: categoryMenuSlice,
     snackBarStatus: snackBarSlice,
-    registerStatus: registerSlice
+    registerStatus: registerSlice,
+    filterStatus: filterSlice
   },
 })
 
