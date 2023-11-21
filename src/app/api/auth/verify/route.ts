@@ -57,7 +57,7 @@ export async function POST(req: Request) {
             verified: true,
             resetPasswordStatus: false,
              })
-        return new Response(JSON.stringify({ message: "Bạn đã xác thực thành công" }), {
+        return new Response(JSON.stringify({ message: "Bạn đã xác thực thành côn" }), {
             status: 200,
             headers: {
               "Content-Type": "application/json",
